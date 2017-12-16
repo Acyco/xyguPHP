@@ -1,5 +1,4 @@
 <?php
-
 /**
  * File: 02.php
  * User: Joye Chen
@@ -10,16 +9,14 @@ interface db
 {
     function conn();
 }
-
-class dbmysql implements db
+class dbmysql
 {
     public function conn()
     {
         echo "mysql";
     }
 }
-
-class dbsqlite implements db
+class dbsqlite
 {
     
     function conn()
@@ -28,23 +25,4 @@ class dbsqlite implements db
     }
 }
 
-class Factory
-{
-    public static function createDB($type)
-    {
-        if ($type == "mysql") {
-            return new dbmysql();
-        } else if ($type == "sqlite") {
-            return new dbsqlite();
-        } else{
-            throw new Exception("Error db type ", 1);
-        }
-    }
-}
-
-$mysql = Factory::createDB("mysql");
-$mysql->conn();
-$sqlite = Factory::createDB("sqlite");
-$mysql->conn();
-
-
+$db = new dbmysql();
