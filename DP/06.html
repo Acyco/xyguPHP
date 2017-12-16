@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        div{
+            margin: 10px;
+            width: 500px;
+            height: 200px;
+        }
+        #content {
+            border: 1px solid red;
+        }
+
+        #ad {
+            border: 1px solid blue;
+        }
+    </style>
+    <script>
+        function t() {
+            var scl = document.getElementsByTagName('select')[0];
+            if (scl.value == 'male'){
+                document.getElementById('content').style.background = 'gray';
+                document.getElementById('ad').innerHTML = "汔车";
+            } else if (scl.value == "female")
+            {
+                document.getElementById('content').style.background = 'pink';
+                document.getElementById('ad').innerHTML = "减肥";
+
+            }
+
+        }
+    </script>
+</head>
+<body>
+<h1>面向过程</h1>
+<select name="" id="" onchange="t()">
+    <option value="male">男士风格</option>
+    <option value="female">女士风格</option>
+</select>
+<div id="content">内容</div>
+<div id="ad">广告</div>
+</body>
+</html>
