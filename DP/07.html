@@ -39,11 +39,12 @@
     sel.detach = function (key) {
         delete sel.observers[key]
     };
-    sel.notify = function () {
+    sel.onchange = sel.notify = function () {
         for (var key in this.observers ){
             this.observers[key].update(this);
         }
     };
+
     var content = document.getElementById('content');
     var ad = document.getElementById('ad');
     content.update = function (observers) {
