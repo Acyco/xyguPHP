@@ -26,31 +26,34 @@
     <option value="male">男士风格</option>
     <option value="female">女士风格</option>
 </select>
+<button onclick="t()">观察尾部</button>
+<button onclick="t1()">别观察尾部了</button>
 <div id="content">内容</div>
 <div id="ad">广告</div>
+<div id="study">学习</div>
 </body>
 <script>
 
     var sel = document.getElementsByTagName('select')[0];
     sel.observers = {};
     sel.attach = function (key, obj) {
-        sel.observers[key] = obj;
+        this.observers[key] = obj;
     };
     sel.detach = function (key) {
-        delete sel.observers[key]
+        delete this.observers[key]
     };
     sel.onchange = sel.notify = function () {
         for (var key in this.observers ){
             this.observers[key].update(this);
         }
     };
-
+//客户端调用
     var content = document.getElementById('content');
     var ad = document.getElementById('ad');
     content.update = function (observers) {
         if (observers.value == "male"){
             this.style.background = 'gray';
-        }else if (observers.value == "faemale"){
+        }else if (observers.value == "female"){
             this.style.background = 'pink';
         }
     };
@@ -63,5 +66,25 @@
     };
     sel.attach("content",content);
     sel.attach("ad",ad);
+
+    var study = document.getElementById('study');
+    study.update = function (observers) {
+        if (observers.value == "male"){
+            this.innerHTML = "学习计算机";
+        }else if (observers.value == "female"){
+            this.innerHTML = '学习美容 ';
+        }
+    };
+
+
+    function t()
+    {
+        sel.attach("study",study);
+    }
+    function t1()
+    {
+        sel.detach("study");
+    }
+
 </script>
 </html>
