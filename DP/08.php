@@ -84,7 +84,7 @@ class secrity implements SplObserver{
      */
     public function update(SplSubject $subject)
     {
-        if($subject->lognum > 3)
+        if($subject->lognum < 3)
         {
             echo "这是第".$subject->lognum."次安全登录";
         }else{
