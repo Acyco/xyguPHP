@@ -40,7 +40,7 @@ class user implements SplSubject
       $this->observers->attach($observer);
     }
     
-    /**
+    /**jegf
      * Detach an observer
      * @link http://php.net/manual/en/splsubject.detach.php
      * @param SplObserver $observer <p>
@@ -65,7 +65,7 @@ class user implements SplSubject
         $this->observers->rewind();
         while($this->observers->valid()){
             $observer = $this->observers->current();
-            $observer->update();
+            $observer->update($this);
             $this->observers->next();
         }
     }
@@ -86,7 +86,7 @@ class secrity implements SplObserver{
     {
         if($subject->lognum > 3)
         {
-            echo "这是第".$subject->lognum."次安全登录"
+            echo "这是第".$subject->lognum."次安全登录";
         }else{
     
             echo "这是第".$subject->lognum."次异常登录";
