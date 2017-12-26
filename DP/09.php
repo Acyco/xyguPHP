@@ -25,7 +25,7 @@ class brand
 class admin
 {
     public $power = 2;
-    protected $top = "public";
+    protected $top = "police";
     public function process($lev)
     {
         if ($lev <= $this->power) {
@@ -37,7 +37,7 @@ class admin
     }
 }
 
-class pulice
+class police
 {
     public $power = 3;
     protected $top = null;
