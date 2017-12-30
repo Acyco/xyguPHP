@@ -64,3 +64,8 @@ $type = $_POST['op'];
 $cmath = new CMath($type);
 echo $cmath->calc($_POST['op1'], $_POST['op2']);
     
+
+
+
+
+
