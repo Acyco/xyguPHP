@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<!--suppress JSAnnotator -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    #give-border {
+        border: 1px solid red;
+        padding: 20px;
+        margin: 10px;
+    }
+
+    .ptext {
+        display: inline-block;
+        width: 120px;
+    }
+
+    .f_l {
+        border: 1px solid blue;
+        padding: 5px;
+        margin: 5px;
+    }
+
+    select {
+        width: 100px;
+    }
+
+    #wupin_name option {
+        width: 100px;
+        color: red;
+    }
+</style>
+<body>
+<h1>give 指令</h1>
+<div id="give-border">
+    <p><span class="ptext">玩家名：</span><input type="text" name="username" id="username" value="joyechen"></p>
+    <p><span class="ptext">物品分类：</span>
+        <select id="wupin_class">
+            <option value="tool">工具</option>
+            <option value="equip">战斗用品</option>
+        </select>
+    </p>
+    <p><span class="ptext">物品名称：</span>
+        <select id="wupin_name">
+        </select>
+    </p>
+
+    <p><span class="ptext">数量：</span><input type="text" name="username" id="number" value="1"></p>
+    <p><span class="ptext">耐久度：</span><input type="text" name="username" id="naijiu" value="0"></p>
+    <div id="fumo_list"></div>
+    <div class="buttons">
+        <button id="add_fumo">添加附魔</button>
+        <button id="generate">生成</button>
+    </div>
+    <div id="give"></div>
+
+</div>
+</body>
+
+<script>
+
+    var username = document.getElementById("username");
+    var number = document.getElementById("number");
+    var naijiu = document.getElementById("naijiu");
+    var wp_class = document.getElementById("wupin_class");
+    var wp_name = document.getElementById("wupin_name");
+    var add_fumo = document.getElementById("add_fumo");
+    var fumo_list = document.getElementById("fumo_list");
+    var generate = document.getElementById("generate");
+    var give = document.getElementById("give");
+    //物品
+    var wp_all = [{//工具
+        _class: "tool",
+        option: [
+            {name: "石斧", key: "stone_axe"},
+            {name: "石锄", key: "stone_hoe"},
+            {name: "石镐", key: "stone_pickaxe"},
+            {name: "石铲", key: "stone_shovel"},
+            {name: "铁斧", key: "iron_axe"},
+            {name: "铁锄", key: "iron_hoe"},
+            {name: "铁镐", key: "iron_pickaxe"},
+            {name: "铁铲", key: "iron_shovel"},
+            {name: "金斧", key: "golden_axe"},
+            {name: "金锄", key: "golden_hoe"},
+            {name: "金镐", key: "golden_pickaxe"},
+            {name: "金铲", key: "golden_shovel"}
+        ]
+    },
+        {//装备
+            _class: "equip",
+            option: [
+                {name: "石剑", key: "stone_sword"},
+                {name: "石头盔", key: "stone_helmet"},
+                {name: "石护甲", key: "stone_chestplate"},
+                {name: "石护腿", key: "stone_leggings"},
+                {name: "石靴子", key: "stone_boots"}
+            ]
+        }];
+
+
+    var fumo_all = [
+        {name: "火焰保护", id: 1, lvl: 5},
+        {name: "摔落保护", id: 2, lvl: 1},
+
+    ];
+    var fumo_lvl_all = ["I", "II", "III", "IV", "V"];
+
+
+    //添加附魔
+    add_fumo.onclick = function () {
+        var f_l = document.createElement("div");
+        var fumo_name = document.createElement("span");
+        var fumo_lname = document.createElement("span");
+        var fumo_id = document.createElement("select");
+        var fumo_lvl = document.createElement("select");
+        var remove_button = document.createElement("button");
+        f_l.className = "f_l";
+        fumo_name.innerText = "附魔名称:";
+        fumo_id.className = "fumo_id";
+        var temp_lvl = 0;
+        for (i in fumo_all) {
+            if (i == 0) {
+                temp_lvl = fumo_all[i].lvl;
+            }
+            var fumo_id_item = document.createElement("option");
+
+            fumo_id_item.value = fumo_all[i].id;
+            fumo_id_item.innerText = fumo_all[i].name;
+//            fumo_id_item. = fumo_all[i].lvl;
+            fumo_id_item.setAttribute('lvl', fumo_all[i].lvl);
+            fumo_id.appendChild(fumo_id_item);
+        }
+        fumo_id.onchange = function () {
+            change_fumo_lvl(this);
+
+        };
+        fumo_lname.innerText = "等级:";
+        add_fumo_lvl_item(fumo_lvl, temp_lvl);
+
+        remove_button.innerHTML = "删除";
+        remove_button.className = "remove";
+
+        //   remove_button.addEvent("click", remove_fumo_item(this), false);
+        remove_button.onclick = function () {
+            remove_fumo_item(this)
+        };
+        f_l.appendChild(fumo_name);
+        f_l.appendChild(fumo_id);
+        f_l.appendChild(fumo_lname);
+        f_l.appendChild(fumo_lvl);
+        f_l.appendChild(remove_button);
+
+        fumo_list.appendChild(f_l);
+    };
+
+    wp_class.onchange = function () {
+        add_wp_name(this);
+    };
+
+    generate.onclick = function () {
+        alert("生成 ");
+        var ench = "";
+
+        var childs = fumo_list.childNodes;
+        if (childs.length > 0) {
+            //有添加附魔
+//            alert(fumo_list.childNodes.length);
+            ench = " {ench:["
+            for (var i = 0; i < childs.length; i++) {
+
+                ench += "{id:"+childs[i].childNodes[1].value+",lvl:"+ childs[i].childNodes[3].value;
+            }
+        }
+        var str = "/give " + username.value + " minecraft:" + wp_name.value + " " + number.value + " " + naijiu.value;
+        give.innerText = str + ench;
+
+    };
+
+    function add_wp_name() {
+        wp_name.options.length = 0;
+        for (i in wp_all) {
+            if (wp_all[i]._class == wp_class.value) {
+                for (j in wp_all[i].option)
+                    wp_name.add(new Option(wp_all[i].option[j].name, wp_all[i].option[j].key))
+            }
+        }
+    }
+
+    function change_fumo_lvl(obj) {
+        console.log(obj.value);
+        console.log(obj.parentNode.childNodes);
+        for (i in fumo_all) {
+            if (fumo_all[i].id == obj.value) {
+                add_fumo_lvl_item(obj.parentNode.childNodes[3], fumo_all[i].lvl)
+            }
+        }
+    }
+
+    function add_fumo_lvl_item(fumo_lvl, lvl) {
+        fumo_lvl.options.length = 0;
+        for (var j = 1; j <= lvl; j++) {
+            var fumo_lvl_item = document.createElement("option");
+            fumo_lvl_item.value = j;
+            fumo_lvl_item.innerText = fumo_lvl_all[j - 1];
+            fumo_lvl.appendChild(fumo_lvl_item);
+        }
+    }
+    function remove_fumo_item(obj) {
+        obj.parentNode.remove();
+    }
+    add_wp_name()
+</script>
+
+
+</html>
